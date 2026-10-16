@@ -1,0 +1,1220 @@
+<!-- wp:html -->
+<section class="smoobu-tax" id="smoobu-tax-2026" aria-labelledby="st-title">
+
+  <div class="st-intro">
+    <div class="st-eyebrow">2026 · UNITED STATES · INTERACTIVE ESTIMATE</div>
+    <h2 id="st-title">Airbnb &amp; short-term rental tax calculator</h2>
+    <p>Explore your rental income, estimated federal and state income taxes, and possible lodging-tax obligations. Compare one property or an entire portfolio.</p>
+  </div>
+
+  <div class="st-shell">
+
+    <div class="st-controls">
+      <div class="st-controls-top">
+        <button type="button" id="st-reset" class="st-reset">Reset</button>
+      </div>
+
+      <details class="st-accordion" open>
+        <summary class="st-accordion-summary"><span>1. Location &amp; portfolio</span></summary>
+        <div class="st-accordion-content">
+          <label class="st-field">
+            Where are your rentals located?
+            <select id="st-state" aria-describedby="st-location-note"></select>
+          </label>
+          <p class="st-help" id="st-location-note">
+            Uses the selected state's 2026 individual income tax reference rate. Assumes all properties are in this state.
+          </p>
+
+          <div class="st-number-field">
+            <label for="st-count">Number of properties</label>
+            <div class="st-stepper">
+              <button type="button" id="st-minus" aria-label="Remove one property">−</button>
+              <input id="st-count" type="number" min="1" max="30" step="1" value="2">
+              <button type="button" id="st-plus" aria-label="Add one property">+</button>
+            </div>
+          </div>
+
+          <fieldset class="st-mode">
+            <legend>Annual rental revenue</legend>
+            <label>
+              <input type="radio" name="st-mode" value="same" checked="">
+              Same amount per property
+            </label>
+            <label>
+              <input type="radio" name="st-mode" value="different">
+              Edit each property
+            </label>
+          </fieldset>
+
+          <div id="st-same-panel">
+            <div class="st-inline">
+              <label for="st-avg">Gross revenue per property / year</label>
+              <output id="st-avg-display" for="st-avg">$45,000</output>
+            </div>
+            <input type="range" id="st-avg" min="5000" max="200000" step="1000" value="45000">
+            <div class="st-scale">
+              <span>$5,000</span>
+              <span>$200,000</span>
+            </div>
+            <label class="st-small-field">
+              Or enter an exact amount ($)
+              <input id="st-avg-number" type="number" min="0" max="10000000" step="1000" value="45000">
+            </label>
+          </div>
+
+          <div id="st-different-panel" hidden="">
+            <p class="st-help">Enter the annual gross booking revenue for each property.</p>
+            <div class="st-property-grid" id="st-property-grid"></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="st-accordion">
+        <summary class="st-accordion-summary"><span>2. Deductions &amp; income-tax assumptions</span></summary>
+        <div class="st-accordion-content">
+          <div class="st-inline">
+            <label for="st-expenses">Deductible rental expenses (% of revenue)</label>
+            <output id="st-expenses-display" for="st-expenses">30%</output>
+          </div>
+          <input type="range" id="st-expenses" min="0" max="85" step="1" value="30">
+          <p class="st-help">
+            Simplified estimate for allowable costs, such as eligible cleaning, platform fees, maintenance, insurance, interest and depreciation. Do not include mortgage principal.
+          </p>
+
+          <label class="st-field">
+            2026 federal filing status
+            <select id="st-filing">
+              <option value="single">Single</option>
+              <option value="joint">Married filing jointly</option>
+              <option value="hoh">Head of household</option>
+            </select>
+          </label>
+
+          <label class="st-field">
+            Other federal <em>taxable</em> income ($)
+            <input id="st-other" type="number" min="0" max="100000000" step="1000" value="50000">
+          </label>
+          <p class="st-help">
+            Income excluding rentals, <strong>after</strong> applicable federal deductions. Used to calculate the extra federal income tax attributable to rental profit, not your full tax bill.
+          </p>
+
+          <div class="st-state-rate">
+            <div>
+              <span>2026 state top marginal rate</span>
+              <strong id="st-top-rate">0%</strong>
+            </div>
+            <p id="st-state-note">State income tax treatment varies.</p>
+          </div>
+
+          <label class="st-field">
+            State planning rate applied to rental profit (%)
+            <input id="st-state-custom" type="number" min="0" max="20" step="0.01" value="0">
+          </label>
+          <p class="st-help">
+            Prefilled from the state's <strong>top marginal individual income tax rate</strong> (or 0 if no broad tax on ordinary rental income). This is a deliberately simplified rate, <strong>not a state tax bracket calculation or predicted effective tax rate</strong>. You can edit it.
+          </p>
+        </div>
+      </details>
+
+      <details class="st-accordion">
+        <summary class="st-accordion-summary"><span>3. Lodging / occupancy taxes</span></summary>
+        <div class="st-accordion-content">
+          <label class="st-field">
+            Verified combined tax rate for your property's address (%)
+            <input id="st-lodging" type="number" min="0" max="50" step="0.01" placeholder="Enter local rate">
+          </label>
+          <p class="st-help">
+            Check the state, county and city requirements for the actual address and stay length. The general state sales-tax rate is <strong>not</strong> automatically the short-term rental lodging-tax rate.
+          </p>
+
+          <div class="st-inline">
+            <label for="st-remitted">Share of lodging taxes remitted by platforms</label>
+            <output id="st-remitted-display" for="st-remitted">0%</output>
+          </div>
+          <input type="range" id="st-remitted" min="0" max="100" step="5" value="0">
+          <p class="st-help">
+            Set 100% only if Airbnb or other booking platforms collect and remit <strong>all</strong> relevant lodging taxes for <strong>all</strong> included bookings. Some jurisdictions require hosts to remit additional taxes.
+          </p>
+        </div>
+      </details>
+
+    </div>
+
+    <div class="st-results" aria-label="Calculated results">
+
+      <div class="st-results-head">
+        <div>
+          <span class="st-eyebrow">YOUR ANNUAL PORTFOLIO SCENARIO</span>
+          <h3 id="st-summary-heading">2 rental properties · Florida</h3>
+        </div>
+        <span class="st-live-pill">2026 model</span>
+      </div>
+
+      <div class="st-kpis" aria-live="polite" aria-atomic="true">
+        <div class="st-kpi">
+          <span>Gross booking revenue</span>
+          <strong id="st-gross">$90,000</strong>
+        </div>
+        <div class="st-kpi">
+          <span>Profit before income tax</span>
+          <strong id="st-profit">$63,000</strong>
+        </div>
+        <div class="st-kpi">
+          <span>Modeled income tax</span>
+          <strong id="st-taxes">$0</strong>
+        </div>
+        <div class="st-kpi st-highlight">
+          <span>Profit after modeled income taxes</span>
+          <strong id="st-remaining">$0</strong>
+        </div>
+      </div>
+
+      <div class="st-chart-head">
+        <h3>Where your revenue goes</h3>
+        <span>Illustrative breakdown</span>
+      </div>
+
+      <div class="st-stacked" id="st-stacked" role="img" aria-label="Distribution of booking revenue among expenses, estimated income taxes and remaining profit">
+        <span id="st-bar-expenses" class="st-bar st-bar-expenses"></span>
+        <span id="st-bar-federal" class="st-bar st-bar-federal"></span>
+        <span id="st-bar-state" class="st-bar st-bar-state"></span>
+        <span id="st-bar-remaining" class="st-bar st-bar-remaining"></span>
+      </div>
+
+      <div class="st-key">
+        <span><i class="st-key-expenses"></i>Expenses</span>
+        <span><i class="st-key-federal"></i>Federal tax</span>
+        <span><i class="st-key-state"></i>State tax proxy</span>
+        <span><i class="st-key-remaining"></i>Remaining profit</span>
+      </div>
+
+      <div class="st-breakdown">
+        <div>
+          <span>Allowable expenses (assumed)</span>
+          <strong id="st-expenses-out">$0</strong>
+        </div>
+        <div>
+          <span>Incremental federal income tax <small>(2026 brackets)</small></span>
+          <strong id="st-federal-out">$0</strong>
+        </div>
+        <div>
+          <span>State planning estimate <small>(editable rate × profit)</small></span>
+          <strong id="st-state-out">$0</strong>
+        </div>
+        <div class="st-break-total">
+          <span>Total modeled income taxes</span>
+          <strong id="st-tax-out">$0</strong>
+        </div>
+      </div>
+
+      <div class="st-lodging-results">
+        <div class="st-lodging-heading">
+          <h3>Lodging taxes: separate from income tax</h3>
+          <span id="st-lodging-status">Local rate required</span>
+        </div>
+        <div class="st-lodging-cards">
+          <div>
+            <span>Calculated guest-facing lodging tax</span>
+            <strong id="st-lodging-total">—</strong>
+          </div>
+          <div>
+            <span>Estimated host remittance</span>
+            <strong id="st-host-remit">—</strong>
+          </div>
+        </div>
+        <p>
+          Lodging taxes are usually charged to guests, and are <strong>not deducted again</strong> from revenue in this model. Confirm which charges are taxable and which taxes platforms remit.
+        </p>
+      </div>
+
+      <div class="st-alert" id="st-alert">
+        This is an educational estimate, not an actual tax return.
+      </div>
+
+      <a class="st-cta" href="https://www.smoobu.com/en/">
+        Make managing your vacation rentals easier
+        <span aria-hidden="true">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="st-disclaimer">
+    <h3>Important tax information</h3>
+    <p>
+      <strong>Tax year:</strong> 2026. This tool assumes US individual ownership, taxable positive rental profit, one state for all listed properties, and the entered expenses are deductible. It does not calculate actual state brackets, state deductions, city/county income taxes, QBI deductions, passive-activity or at-risk rules, depreciation recapture, capital gains, alternative minimum tax, net investment income tax, self-employment tax, credits, nonresident taxation, business/entity taxes, personal-use allocations, or property tax. Ordinary rental income is commonly reported on Schedule E, but substantial guest services can change its tax treatment. A dwelling used as a home and rented for fewer than 15 days may qualify for a special federal exclusion; that exemption is <strong>not</strong> automatically calculated here. Zero lodging tax entered or displayed does not prove exemption. Get professional advice before filing or remitting.
+    </p>
+    <p class="st-sources">
+      Sources:
+      <a href="https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill" target="_blank" rel="noopener noreferrer">IRS 2026 federal brackets</a> ·
+      <a href="https://taxfoundation.org/data/all/state/state-income-tax-rates-2026/" target="_blank" rel="noopener noreferrer">Tax Foundation 2026 state income-tax rates</a> ·
+      <a href="https://www.irs.gov/taxtopics/tc415" target="_blank" rel="noopener noreferrer">IRS rental-property rules</a> ·
+      <a href="https://www.airbnb.com/help/article/2509" target="_blank" rel="noopener noreferrer">Airbnb tax collection locations</a>.
+      State reference rates use Tax Foundation's 2026 schedule, updated for later 2026 legislation in Arkansas, Georgia, South Carolina, Utah and West Virginia. Verify changes before publication or reuse in future tax years.
+    </p>
+  </div>
+
+</section>
+
+<style>
+.smoobu-tax {
+  --st-blue: #2268ea;
+  --st-ink: #142b4b;
+  --st-muted: #62778e;
+  --st-line: #dfe8f3;
+  --st-pale: #f4f8ff;
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: clamp(18px,3vw,36px);
+  border: 1px solid var(--st-line);
+  border-radius: 24px;
+  background: #fff;
+  color: var(--st-ink);
+  font-family: inherit;
+  box-shadow: 0 12px 38px rgba(20,55,110,.06);
+  box-sizing: border-box;
+}
+.smoobu-tax * { box-sizing: border-box; }
+.smoobu-tax [hidden] { display: none!important; }
+.smoobu-tax h2,.smoobu-tax h3,.smoobu-tax p { margin-top: 0; }
+
+.smoobu-tax .st-eyebrow {
+  color: var(--st-blue);
+  letter-spacing: .08em;
+  font-size: 11px;
+  font-weight: 800;
+}
+.smoobu-tax .st-intro h2 {
+  font-size: clamp(27px,3.2vw,38px);
+  line-height: 1.17;
+  margin: 9px 0;
+  color: var(--st-ink);
+}
+.smoobu-tax .st-intro>p {
+  max-width: 740px;
+  color: var(--st-muted);
+  line-height: 1.65;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+.smoobu-tax .st-shell {
+  display: grid;
+  grid-template-columns: minmax(280px,390px) minmax(0,1fr);
+  gap: 20px;
+  align-items: start;
+}
+.smoobu-tax .st-controls,
+.smoobu-tax .st-results {
+  min-width: 0;
+  border: 1px solid var(--st-line);
+  border-radius: 17px;
+  padding: 22px;
+}
+.smoobu-tax .st-controls { background: #f7faff; }
+.smoobu-tax .st-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.smoobu-tax .st-section-title h3,
+.smoobu-tax .st-mini-heading {
+  font-size: 16px;
+  color: var(--st-ink);
+  font-weight: 750;
+  margin: 0 0 17px;
+}
+.smoobu-tax .st-reset {
+  border: 0;
+  background: transparent;
+  color: var(--st-blue);
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  padding: 5px;
+}
+.smoobu-tax .st-reset:hover { text-decoration: underline; }
+.smoobu-tax .st-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.smoobu-tax .st-field input,
+.smoobu-tax .st-field select,
+.smoobu-tax .st-small-field input,
+.smoobu-tax .st-stepper input,
+.smoobu-tax .st-property-grid input {
+  border: 1px solid #ccd9ea;
+  border-radius: 9px;
+  background: #fff;
+  color: var(--st-ink);
+  font: inherit;
+  padding: 11px 12px;
+  width: 100%;
+  min-height: 43px;
+}
+.smoobu-tax input[type=range] {
+  display: block;
+  width: 100%;
+  accent-color: var(--st-blue);
+  cursor: pointer;
+}
+.smoobu-tax .st-help {
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--st-muted);
+  margin: 7px 0 17px;
+  font-weight: 400;
+}
+.smoobu-tax .st-help strong { font-weight: 750; }
+.smoobu-tax .st-number-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 17px 0;
+  font-weight: 700;
+  font-size: 13px;
+}
+.smoobu-tax .st-stepper {
+  display: flex;
+  align-items: stretch;
+  max-width: 153px;
+}
+.smoobu-tax .st-stepper input {
+  text-align: center;
+  border-radius: 0;
+  width: 65px;
+  min-width: 0;
+  padding: 6px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.smoobu-tax .st-stepper input::-webkit-inner-spin-button {
+  appearance: none;
+}
+.smoobu-tax .st-stepper button {
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--st-blue);
+  background: #e8f0ff;
+  border: 1px solid #ccd9ea;
+  padding: 0 11px;
+  cursor: pointer;
+}
+.smoobu-tax .st-stepper button:first-child {
+  border-radius: 9px 0 0 9px;
+}
+.smoobu-tax .st-stepper button:last-child {
+  border-radius: 0 9px 9px 0;
+}
+.smoobu-tax .st-mode {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+}
+.smoobu-tax .st-mode legend {
+  font-size: 13px;
+  font-weight: 750;
+  margin-bottom: 9px;
+}
+.smoobu-tax .st-mode label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: #425b78;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.smoobu-tax .st-mode input { accent-color: var(--st-blue); }
+.smoobu-tax .st-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 9px 0 11px;
+}
+.smoobu-tax .st-inline output {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--st-blue);
+  white-space: nowrap;
+}
+.smoobu-tax .st-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  color: #8b9bae;
+  font-size: 10px;
+}
+.smoobu-tax .st-small-field {
+  display: block;
+  font-size: 11px;
+  color: var(--st-muted);
+  margin: 14px 0 0;
+}
+.smoobu-tax .st-small-field input { margin-top: 6px; }
+.smoobu-tax .st-property-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+  max-height: 285px;
+  overflow-y: auto;
+  padding: 3px;
+}
+.smoobu-tax .st-property-grid label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #485f7a;
+}
+.smoobu-tax .st-property-grid input {
+  margin-top: 5px;
+  padding: 9px;
+  min-height: 39px;
+}
+.smoobu-tax .st-rule {
+  height: 1px;
+  background: var(--st-line);
+  margin: 24px 0 20px;
+}
+.smoobu-tax .st-state-rate {
+  border: 1px solid #d9e6fa;
+  border-radius: 10px;
+  background: #fff;
+  padding: 11px 12px;
+  margin-bottom: 14px;
+}
+.smoobu-tax .st-state-rate>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 650;
+}
+.smoobu-tax .st-state-rate strong {
+  color: var(--st-blue);
+  font-size: 19px;
+}
+.smoobu-tax .st-state-rate p {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--st-muted);
+  margin: 6px 0 0;
+}
+.smoobu-tax .st-results-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+.smoobu-tax .st-results-head h3 {
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 5px 0;
+}
+.smoobu-tax .st-live-pill {
+  padding: 6px 10px;
+  border: 1px solid #d4e4ff;
+  background: #f1f6ff;
+  border-radius: 30px;
+  color: var(--st-blue);
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.smoobu-tax .st-kpis {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 11px;
+}
+.smoobu-tax .st-kpi {
+  border: 1px solid var(--st-line);
+  border-radius: 12px;
+  padding: 15px 13px;
+  min-width: 0;
+}
+.smoobu-tax .st-kpi span {
+  display: block;
+  color: var(--st-muted);
+  font-size: 11px;
+  line-height: 1.4;
+  min-height: 30px;
+}
+.smoobu-tax .st-kpi strong {
+  display: block;
+  margin-top: 9px;
+  font-size: clamp(20px,2.3vw,29px);
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.smoobu-tax .st-highlight {
+  background: #edf4ff;
+  border-color: #d2e2ff;
+}
+.smoobu-tax .st-highlight strong { color: var(--st-blue); }
+.smoobu-tax .st-chart-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin: 27px 0 12px;
+}
+.smoobu-tax .st-chart-head h3,
+.smoobu-tax .st-lodging-heading h3 {
+  font-size: 16px;
+  margin: 0;
+}
+.smoobu-tax .st-chart-head>span {
+  font-size: 11px;
+  color: var(--st-muted);
+}
+.smoobu-tax .st-stacked {
+  display: flex;
+  overflow: hidden;
+  border-radius: 9px;
+  width: 100%;
+  height: 36px;
+  background: #e8eef6;
+}
+.smoobu-tax .st-bar {
+  display: block;
+  height: 100%;
+  transition: width .22s ease;
+}
+.smoobu-tax .st-bar-expenses,
+.smoobu-tax .st-key-expenses { background: #b7c7dc; }
+.smoobu-tax .st-bar-federal,
+.smoobu-tax .st-key-federal { background: #6b92e7; }
+.smoobu-tax .st-bar-state,
+.smoobu-tax .st-key-state { background: #91b9f4; }
+.smoobu-tax .st-bar-remaining,
+.smoobu-tax .st-key-remaining { background: #1da99c; }
+.smoobu-tax .st-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 15px;
+  margin: 12px 0 19px;
+}
+.smoobu-tax .st-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--st-muted);
+}
+.smoobu-tax .st-key i {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+}
+.smoobu-tax .st-breakdown {
+  border: 1px solid var(--st-line);
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+.smoobu-tax .st-breakdown>div {
+  padding: 13px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #edf1f7;
+}
+.smoobu-tax .st-breakdown>div:last-child { border-bottom: 0; }
+.smoobu-tax .st-breakdown small {
+  color: var(--st-muted);
+  display: block;
+  font-size: 10px;
+  margin-top: 3px;
+}
+.smoobu-tax .st-breakdown strong {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.smoobu-tax .st-break-total { font-weight: 800; }
+.smoobu-tax .st-lodging-results {
+  background: var(--st-pale);
+  border-radius: 13px;
+  padding: 16px;
+  margin-top: 22px;
+}
+.smoobu-tax .st-lodging-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+.smoobu-tax .st-lodging-heading span {
+  font-size: 10px;
+  color: var(--st-blue);
+  font-weight: 800;
+}
+.smoobu-tax .st-lodging-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.smoobu-tax .st-lodging-cards>div {
+  background: #fff;
+  border-radius: 9px;
+  padding: 12px;
+}
+.smoobu-tax .st-lodging-cards span {
+  font-size: 11px;
+  color: var(--st-muted);
+  display: block;
+  min-height: 32px;
+}
+.smoobu-tax .st-lodging-cards strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.smoobu-tax .st-lodging-results p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--st-muted);
+  margin: 11px 0 0;
+}
+.smoobu-tax .st-alert {
+  font-size: 11px;
+  line-height: 1.6;
+  border-left: 3px solid var(--st-blue);
+  padding: 9px 11px;
+  background: #f5f9ff;
+  margin: 16px 0;
+}
+.smoobu-tax .st-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  text-decoration: none;
+  background: var(--st-blue);
+  color: white!important;
+  font-size: 14px;
+  font-weight: 750;
+  padding: 14px 18px;
+  border-radius: 10px;
+  transition: background .15s;
+}
+.smoobu-tax .st-cta:hover {
+  background: #144fba;
+  color: white!important;
+}
+.smoobu-tax .st-disclaimer {
+  margin-top: 23px;
+  padding-top: 19px;
+  border-top: 1px solid var(--st-line);
+}
+.smoobu-tax .st-disclaimer h3 {
+  font-size: 15px;
+  margin: 0 0 9px;
+}
+.smoobu-tax .st-disclaimer p {
+  font-size: 11px;
+  color: var(--st-muted);
+  line-height: 1.75;
+  margin: 0 0 10px;
+}
+.smoobu-tax .st-disclaimer a {
+  color: var(--st-blue);
+  text-decoration: underline;
+}
+.smoobu-tax button:focus-visible,
+.smoobu-tax input:focus-visible,
+.smoobu-tax select:focus-visible,
+.smoobu-tax a:focus-visible {
+  outline: 2px solid var(--st-blue);
+  outline-offset: 3px;
+}
+@media(max-width:900px) {
+  .smoobu-tax .st-shell { grid-template-columns: 1fr; }
+  .smoobu-tax .st-controls,
+  .smoobu-tax .st-results { padding: 19px; }
+}
+@media(max-width:520px) {
+  .smoobu-tax { padding: 15px 12px; }
+  .smoobu-tax .st-results,
+  .smoobu-tax .st-controls { padding: 14px; }
+  .smoobu-tax .st-kpi { padding: 12px 10px; }
+  .smoobu-tax .st-kpi strong { font-size: 19px; }
+  .smoobu-tax .st-lodging-cards { grid-template-columns: 1fr; }
+  .smoobu-tax .st-property-grid { grid-template-columns: 1fr 1fr; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .smoobu-tax .st-bar { transition: none; }
+}
+
+/* Collapsible configuration panels (native, accessible details/summary) */
+.smoobu-tax .st-controls {
+  padding: 14px;
+}
+.smoobu-tax .st-controls-top {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 3px 9px;
+}
+.smoobu-tax .st-accordion {
+  margin: 0 0 10px;
+  border: 1px solid var(--st-line);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+.smoobu-tax .st-accordion:last-child { margin-bottom: 0; }
+.smoobu-tax .st-accordion-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 14px;
+  color: var(--st-ink);
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.35;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+.smoobu-tax .st-accordion-summary::-webkit-details-marker { display: none; }
+.smoobu-tax .st-accordion-summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-right: 2px solid var(--st-blue);
+  border-bottom: 2px solid var(--st-blue);
+  transform: rotate(45deg);
+  transition: transform .18s ease;
+}
+.smoobu-tax .st-accordion[open] > .st-accordion-summary::after {
+  transform: rotate(225deg);
+}
+.smoobu-tax .st-accordion[open] > .st-accordion-summary {
+  border-bottom: 1px solid var(--st-line);
+}
+.smoobu-tax .st-accordion-summary:hover { background: var(--st-pale); }
+.smoobu-tax .st-accordion-summary:focus-visible {
+  outline: 2px solid var(--st-blue);
+  outline-offset: -3px;
+}
+.smoobu-tax .st-accordion-content { padding: 16px 14px 10px; }
+@media(prefers-reduced-motion:reduce) {
+  .smoobu-tax .st-accordion-summary::after { transition: none; }
+}
+</style>
+
+<script>
+(function(){
+  function init(){
+    var root = document.getElementById('smoobu-tax-2026');
+    if (!root || root.dataset.stReady === '1') return;
+    root.dataset.stReady = '1';
+
+    var byId = function(id) {
+      return root.querySelector('#' + id);
+    };
+    var money = function(n) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+      }).format(n);
+    };
+    var number = function(id, fallback) {
+      var n = Number(byId(id).value);
+      return Number.isFinite(n) ? n : fallback;
+    };
+    var clamp = function(v,min,max) {
+      return Math.max(min,Math.min(max,v));
+    };
+
+    // 2026 TOP MARGINAL state individual income tax
+    // reference rates (%), not effective tax rates.
+    // State income tax is a simplified editable proxy.
+    var states = [
+      ['Alabama',5],
+      ['Alaska',0],
+      ['Arizona',2.5],
+      ['Arkansas',3.7],
+      ['California',13.3],
+      ['Colorado',4.4],
+      ['Connecticut',6.99],
+      ['Delaware',6.6],
+      ['Florida',0],
+      ['Georgia',4.99],
+      ['Hawaii',11],
+      ['Idaho',5.3],
+      ['Illinois',4.95],
+      ['Indiana',2.95],
+      ['Iowa',3.8],
+      ['Kansas',5.58],
+      ['Kentucky',3.5],
+      ['Louisiana',3],
+      ['Maine',7.15],
+      ['Maryland',6.5],
+      ['Massachusetts',9],
+      ['Michigan',4.25],
+      ['Minnesota',9.85],
+      ['Mississippi',4],
+      ['Missouri',4.7],
+      ['Montana',5.65],
+      ['Nebraska',4.55],
+      ['Nevada',0],
+      ['New Hampshire',0],
+      ['New Jersey',10.75],
+      ['New Mexico',5.9],
+      ['New York',10.9],
+      ['North Carolina',3.99],
+      ['North Dakota',2.5],
+      ['Ohio',2.75],
+      ['Oklahoma',4.5],
+      ['Oregon',9.9],
+      ['Pennsylvania',3.07],
+      ['Rhode Island',5.99],
+      ['South Carolina',5.21],
+      ['South Dakota',0],
+      ['Tennessee',0],
+      ['Texas',0],
+      ['Utah',4.45],
+      ['Vermont',8.75],
+      ['Virginia',5.75],
+      ['Washington',0],
+      ['West Virginia',4.58],
+      ['Wisconsin',7.65],
+      ['Wyoming',0],
+      ['District of Columbia',10.75]
+    ];
+
+    // 2026 federal ordinary income-tax brackets
+    // Indexed by filing status.
+    var filingBrackets = {
+      single: [
+        [12400,.10],
+        [50400,.12],
+        [105700,.22],
+        [201775,.24],
+        [256225,.32],
+        [640600,.35],
+        [Infinity,.37]
+      ],
+      joint: [
+        [24800,.10],
+        [100800,.12],
+        [211400,.22],
+        [403550,.24],
+        [512450,.32],
+        [768700,.35],
+        [Infinity,.37]
+      ],
+      hoh: [
+        [17700,.10],
+        [67450,.12],
+        [105700,.22],
+        [201750,.24],
+        [256200,.32],
+        [640600,.35],
+        [Infinity,.37]
+      ]
+    };
+
+    function federalTax(income,status) {
+      var sum = 0, start = 0;
+      filingBrackets[status].forEach(function(b) {
+        var upper = b[0], rate = b[1];
+        var chunk = Math.max(0,Math.min(income,upper)-start);
+        sum += chunk * rate;
+        start = upper;
+      });
+      return sum;
+    }
+
+    var incomes = Array(30).fill(45000);
+    var stateSelect = byId('st-state');
+
+    states.forEach(function(pair,i) {
+      var opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = pair[0];
+      stateSelect.appendChild(opt);
+    });
+
+    var defaultState = states.findIndex(function(s) {
+      return s[0] === 'Florida';
+    });
+    stateSelect.value = String(defaultState);
+
+    function count() {
+      return clamp(Math.round(number('st-count',2)||1),1,30);
+    }
+
+    function mode() {
+      return root.querySelector('input[name="st-mode"]:checked').value;
+    }
+
+    function drawProperties() {
+      var grid = byId('st-property-grid');
+      grid.replaceChildren();
+
+      for (var i = 0; i < count(); i++) {
+        var label = document.createElement('label');
+        label.textContent = 'Property ' + (i+1);
+
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.min = '0';
+        input.max = '10000000';
+        input.step = '1000';
+        input.value = String(incomes[i]);
+        input.dataset.index = String(i);
+        input.setAttribute(
+          'aria-label',
+          'Annual gross revenue for property ' + (i+1) + ' in USD'
+        );
+
+        input.addEventListener('input',function(e) {
+          incomes[Number(e.target.dataset.index)] =
+            clamp(Number(e.target.value)||0,0,10000000);
+          render();
+        });
+
+        label.appendChild(input);
+        grid.appendChild(label);
+      }
+    }
+
+    function syncState() {
+      var state = states[Number(stateSelect.value)];
+
+      byId('st-top-rate').textContent = state[1] + '%';
+      byId('st-state-custom').value = state[1];
+
+      byId('st-state-note').textContent =
+        state[1] === 0
+          ? 'No broad state individual income tax on ordinary rental income in 2026. Other taxes can still apply.'
+          : state[0] === 'District of Columbia'
+            ? 'D.C. rate; local rules may also apply.'
+            : 'This is the highest marginal state rate, not the rate necessarily paid on rental profit.';
+
+      render();
+    }
+
+    function render() {
+      var n = count();
+      var shared = Math.max(0,number('st-avg-number',45000));
+
+      var gross = mode() === 'same'
+        ? n * shared
+        : incomes.slice(0,n).reduce(function(a,b) { return a+b; },0);
+
+      var expenseRate = clamp(number('st-expenses',30),0,85)/100;
+      var expense = gross * expenseRate;
+      var profit = Math.max(0,gross-expense);
+
+      var baseIncome = Math.max(0,number('st-other',50000));
+      var filingStatus = byId('st-filing').value;
+
+      // Incremental federal tax on assumed taxable rental profit
+      var fed = Math.max(
+        0,
+        federalTax(baseIncome+profit,filingStatus) -
+        federalTax(baseIncome,filingStatus)
+      );
+
+      // Editable flat-rate state planning assumption
+      var stateRate = clamp(number('st-state-custom',0),0,20)/100;
+      var stateTax = profit * stateRate;
+
+      var tax = fed + stateTax;
+      var remaining = profit - tax;
+      var currentState = states[Number(stateSelect.value)][0];
+
+      byId('st-summary-heading').textContent =
+        n + ' rental ' + (n===1?'property':'properties') +
+        ' · ' + currentState;
+
+      byId('st-gross').textContent = money(gross);
+      byId('st-profit').textContent = money(profit);
+      byId('st-taxes').textContent = money(tax);
+      byId('st-remaining').textContent = money(remaining);
+      byId('st-expenses-out').textContent = money(expense);
+      byId('st-federal-out').textContent = money(fed);
+      byId('st-state-out').textContent = money(stateTax);
+      byId('st-tax-out').textContent = money(tax);
+
+      var parts = [
+        ['st-bar-expenses',expense],
+        ['st-bar-federal',fed],
+        ['st-bar-state',stateTax],
+        ['st-bar-remaining',Math.max(0,remaining)]
+      ];
+
+      parts.forEach(function(item) {
+        byId(item[0]).style.width =
+          (gross>0 ? 100*item[1]/gross : 0) + '%';
+      });
+
+      byId('st-stacked').setAttribute(
+        'aria-label',
+        'Gross revenue '+money(gross)+
+        '; expenses '+money(expense)+
+        '; federal incremental income tax '+money(fed)+
+        '; state planning estimate '+money(stateTax)+
+        '; remaining profit '+money(remaining)
+      );
+
+      byId('st-expenses-display').textContent =
+        Math.round(expenseRate*100) + '%';
+
+      var remitted = clamp(number('st-remitted',0),0,100)/100;
+      byId('st-remitted-display').textContent =
+        Math.round(remitted*100) + '%';
+
+      // Lodging tax is modeled separately from income tax.
+      var lodgingInput = byId('st-lodging');
+      var verified =
+        lodgingInput.value.trim() !== '' &&
+        Number.isFinite(Number(lodgingInput.value));
+
+      if (verified) {
+        var total =
+          gross * clamp(Number(lodgingInput.value),0,50)/100;
+
+        byId('st-lodging-total').textContent = money(total);
+        byId('st-host-remit').textContent =
+          money(total*(1-remitted));
+        byId('st-lodging-status').textContent =
+          'User-entered local rate';
+      } else {
+        byId('st-lodging-total').textContent = '—';
+        byId('st-host-remit').textContent = '—';
+        byId('st-lodging-status').textContent =
+          'Local rate required';
+      }
+
+      byId('st-alert').textContent =
+        'Illustrative '+currentState+
+        ' calculation: federal income tax uses published 2026 brackets; state income tax uses your editable '+
+        (stateRate*100).toFixed(2)+
+        '% flat-rate planning assumption. Confirm local lodging taxes, exemptions, and platform remittances separately.';
+    }
+
+    stateSelect.addEventListener('change',syncState);
+
+    byId('st-minus').addEventListener('click',function() {
+      byId('st-count').value = count()-1;
+      normalizeCount();
+    });
+
+    byId('st-plus').addEventListener('click',function() {
+      byId('st-count').value = count()+1;
+      normalizeCount();
+    });
+
+    function normalizeCount() {
+      byId('st-count').value = count();
+      drawProperties();
+      render();
+    }
+
+    byId('st-count').addEventListener('change',normalizeCount);
+
+    root.querySelectorAll('input[name="st-mode"]').forEach(function(input) {
+      input.addEventListener('change',function() {
+        var different = mode() === 'different';
+        byId('st-same-panel').hidden = different;
+        byId('st-different-panel').hidden = !different;
+        drawProperties();
+        render();
+      });
+    });
+
+    byId('st-avg').addEventListener('input',function() {
+      byId('st-avg-number').value = this.value;
+      byId('st-avg-display').textContent = money(Number(this.value));
+      render();
+    });
+
+    byId('st-avg-number').addEventListener('input',function() {
+      var v = clamp(Number(this.value)||0,0,10000000);
+      byId('st-avg').max =
+        String(Math.max(200000,Math.ceil(v/10000)*10000));
+      byId('st-avg').value = String(v);
+      byId('st-avg-display').textContent = money(v);
+      render();
+    });
+
+    [
+      'st-expenses',
+      'st-filing',
+      'st-other',
+      'st-state-custom',
+      'st-lodging',
+      'st-remitted'
+    ].forEach(function(id) {
+      byId(id).addEventListener('input',render);
+      byId(id).addEventListener('change',render);
+    });
+
+    byId('st-reset').addEventListener('click',function() {
+      stateSelect.value = String(defaultState);
+      byId('st-count').value = '2';
+
+      root.querySelector(
+        'input[name="st-mode"][value="same"]'
+      ).checked = true;
+
+      byId('st-same-panel').hidden = false;
+      byId('st-different-panel').hidden = true;
+
+      byId('st-avg').value = '45000';
+      byId('st-avg').max = '200000';
+      byId('st-avg-number').value = '45000';
+      byId('st-avg-display').textContent = money(45000);
+
+      byId('st-expenses').value = '30';
+      byId('st-filing').value = 'single';
+      byId('st-other').value = '50000';
+      byId('st-lodging').value = '';
+      byId('st-remitted').value = '0';
+
+      root.querySelectorAll('.st-accordion').forEach(function(panel, index) {
+        panel.open = index === 0;
+      });
+
+      incomes.fill(45000);
+      drawProperties();
+      syncState();
+    });
+
+    drawProperties();
+    syncState();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded',init);
+  } else {
+    init();
+  }
+})();
+</script>
+<!-- /wp:html -->
